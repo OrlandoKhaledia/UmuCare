@@ -1,0 +1,46 @@
+name: doctor_appointment_booking_app
+description: A complete Flutter application for doctor appointment booking using Firebase and Provider.
+# The following line prevents the package from being accidentally published to pub.dev
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  # Setting a compatible SDK range
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # General UI packages
+  cupertino_icons: ^1.0.6
+  
+  # State Management
+  provider: ^6.1.1
+
+  # Firebase Core and Services
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.0
+  firebase_storage: ^13.0.4
+  
+  # Utilities
+  intl: ^0.20.2 # For internationalization and date formatting
+  cached_network_image: ^3.3.1 # For efficient loading of images from the network
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+# The 'flutter' section is critical for project configuration
+flutter:
+  # Enables the Material Design icon set
+  uses-material-design: true
+
+  # Asset declarations
+  assets:
+    # Declaring the entire directories ensures all contained files are included
+    - assets/images/
+    - assets/icons/
