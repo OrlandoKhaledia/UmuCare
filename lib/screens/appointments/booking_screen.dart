@@ -101,58 +101,47 @@ class _BookingScreenState extends State<BookingScreen> {
   /// Opens the date picker with safe bounds and resets time slot on date change.
   Future<void> _selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
-
-    // CRITICAL FIX: Define the start boundary as TODAY at midnight (safely stripping time).
-    // This ensures initialDate is >= firstDate, resolving the original crash.
     final DateTime safeFirstDate = DateTime(now.year, now.month, now.day);
-    
-    // Define the end boundary (e.g., 365 days out for a reasonable limit)
     final DateTime safeLastDate = safeFirstDate.add(const Duration(days: 365));
+    final DateTime initialDate = _selectedDate ?? safeFirstDate;
 
-    // Determine initial date: use _selectedDate if set and valid, otherwise default to safeFirstDate.
-    final DateTime initialDate = _selectedDate != null && !_selectedDate!.isBefore(safeFirstDate)
-        ? _selectedDate!
-        : safeFirstDate;
+    try {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: safeFirstDate,
+        lastDate: safeLastDate,
+        barrierDismissible: true,
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: Theme.of(context).colorScheme.copyWith(
+                primary: AppColors.primary,
+                onPrimary: Colors.white,
+                onSurface: AppColors.secondary,
+                surface: Colors.white,
+              ),
+              datePickerTheme: DatePickerThemeData(
+                backgroundColor: Colors.white,
+                headerBackgroundColor: AppColors.primary,
+                headerForegroundColor: Colors.white,
+                dayOverlayColor: MaterialStateProperty.all(AppColors.primary.withOpacity(0.2)),
+                todayBorder: BorderSide(color: AppColors.primary, width: 1.5),
+              ),
+            ),
+            child: child ?? const SizedBox(),
+          );
+        },
+      );
 
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: safeFirstDate,
-      lastDate: safeLastDate,
-      builder: (context, child) {
-  return Theme(
-    data: ThemeData.light().copyWith(
-      colorScheme: const ColorScheme.light(
-        primary: AppColors.primary,
-        onPrimary: Colors.white,
-        onSurface: AppColors.secondary,
-      ),
-      dialogTheme: const DialogThemeData(
-        backgroundColor: Colors.white,
-      ),
-    ),
-    child: child!,
-  );
-},
-
-      // Disable dates that are not in the doctor's available days
-      selectableDayPredicate: (DateTime day) {
-        final dayName = DateFormat('EEE').format(day); // e.g., 'Mon', 'Tue'
-        final bool isAvailableDay = widget.doctor.availableDays.contains(dayName);
-        
-        // This check prevents the user from selecting a day *before* the current day
-        // or a day not in the doctor's schedule.
-        return isAvailableDay && (day.isAfter(safeFirstDate) || day.isAtSameMomentAs(safeFirstDate));
-      },
-    );
-
-    // Update state and reset time slot if a new date was picked
-    if (picked != null && (picked != _selectedDate || _selectedTimeSlot != null)) {
-      setState(() {
-        _selectedDate = picked;
-        // Reset time slot when date changes
-        _selectedTimeSlot = null; 
-      });
+      if (picked != null && picked != _selectedDate) {
+        setState(() {
+          _selectedDate = picked;
+          _selectedTimeSlot = null;
+        });
+      }
+    } catch (e) {
+      print('Error opening date picker: $e');
     }
   }
 
