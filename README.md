@@ -9,9 +9,9 @@ UmuCare is a modern, responsive mobile application built with Flutter, designed 
 - **Doctor Browsing:** View a list of doctors with their specialties, ratings, and consultation fees.  
 - **Search & Filtering:** Easily search for doctors by name or specialty.  
 - **Detailed Doctor Profiles:** Access comprehensive information about each doctor, including available days and pricing.  
-- **Safe Appointment Booking:** Select a date and time slot using a robust date picker that only allows selection of dates the doctor is available.  
-- **Intelligent Date Picker:** Implements error-prevention logic to ensure the `initialDate` passed to the Flutter date picker always satisfies the `selectableDayPredicate`.  
+- **Safe Appointment Booking:** Select a date and time slot using a robust date picker that only allows selection of dates the doctor is available.   
 - **Real-time State Management:** Uses the `provider` package for simple, reactive state management across the application.  
+![image alt]( https://github.com/OrlandoKhaledia/UmuCare/blob/7fd9f5ab000e7717c16d4e7ed5682105a4e3dd63/login_1%5B1%5D.png)
 
 ---
 
@@ -90,4 +90,5 @@ This pattern ensures a smooth user experience where users returning to the booki
 You can **copy-paste this directly into your `README.md`** in GitHub.  
 
 If you want, I can also **add a section for your app logo and badges** to make it look even more professional. Do you want me to do that?
+![image alt](image url)
 
